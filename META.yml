@@ -1,0 +1,27 @@
+---
+abstract: 'L<List::Flatten> with recursion'
+author:
+  - 'Ryan C. Thompson <rct@thompsonclan.org>'
+build_requires:
+  Carp: 0
+  English: 0
+  File::Find: 0
+  File::Temp: 0
+  Scalar::Util: 0
+  Test::Deep: 0
+  Test::More: 0.94
+configure_requires:
+  ExtUtils::MakeMaker: 6.31
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.102345, CPAN::Meta::Converter version 2.102400'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: List-Flatten-Recursive
+requires:
+  Exporter::Simple: 0
+  List::MoreUtils: 0
+  perl: v5.10
+  utf8: 0
+version: 0.103420
