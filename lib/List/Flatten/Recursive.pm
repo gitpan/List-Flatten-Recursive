@@ -1,11 +1,10 @@
 use strict;
 use warnings;
-use v5.10;
 use utf8;
 
 package List::Flatten::Recursive;
 BEGIN {
-  $List::Flatten::Recursive::VERSION = '0.103420';
+  $List::Flatten::Recursive::VERSION = '0.103460';
 }
 # ABSTRACT: L<List::Flatten> with recursion
 
@@ -57,20 +56,24 @@ List::Flatten::Recursive - L<List::Flatten> with recursion
 
 =head1 VERSION
 
-version 0.103420
+version 0.103460
 
 =head1 SYNOPSIS
 
     use List::Flatten::Recursive qw( flat );
+    sub printlist { print '(' . join(', ', @_) . ")\n" }
 
     my $crazy_listref = [ 1, [ 2, 3 ], [ [ [ 4 ] ] ] ];
-    flat($crazy_listref); # Yields (1,2,3,4)
+    my @flattened = flat($crazy_listref); # Yields (1,2,3,4)
+    printlist(@flattened);
     push @$crazy_listref, $crazy_listref; # Now it contains itself!
-    flat($crazy_listref); # Still yields (1,2,3,4)
-    flat([ $crazy_listref ]); # Ditto.
-
-    # But don't do this.
-    flat(@$crazy_listref); # Will not yield the same as above.
+    @flattened = flat($crazy_listref);    # Still yields (1,2,3,4)
+    printlist(@flattened);
+    @flattened = flat([ $crazy_listref ]); # Ditto.
+    printlist(@flattened);
+    # But don't do this for self-referential lists.
+    @flattened = flat(@$crazy_listref); # Will not yield the same as above.
+    printlist(@flattened);
 
 =head1 DESCRIPTION
 
@@ -79,7 +82,7 @@ example), then C<flat> basically returns all the leaf nodes from an
 inorder tree traversal, and leaves out the internal nodes (i.e.
 listrefs). If the nested list is a DAG instead of just a tree, it
 should still flatten correctly (based on my own definition of
-correctness, of course; see also t/flatten-dag.t).
+correctness, of course; see also F<t/flatten-dag.t>).
 
 If the nested list is self-referential, then any cycles will be broken
 by replacing ancestor references with empty lists. However, the only
@@ -98,8 +101,9 @@ their contents, recursively, until the list no longer contains any
 sublists.
 
 C<flat> makes a best effort to break circular references (that is,
-lists that contain references to themselves), and should never enter
-an infinite recursion.
+lists that contain references to themselves), so it should not enter
+infinite recursion. If you find a case that causes it to recurse
+infinitely, please inform me.
 
 This method is exported by default.
 
@@ -115,10 +119,14 @@ This method is exported only by request. To use this method, put the following a
 
 =head2 Self-referential lists should be flattened by reference
 
-If you are going to flatten a list which may contain references to
+If you are going to flatten a list which might contain references to
 itself, you should pass a reference to that list to C<flat>, or else
 things will not work the way you expect. You will end up with an extra
-trip around the circle before the circular reference is caught.
+instance of each item in the outermost list. However, this will not
+result in infinite recursion.
+
+This module should never cause infinite recursion. If it does, please
+submit a bug report.
 
 =head2 C<flat> always returns a list
 

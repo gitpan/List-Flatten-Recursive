@@ -10,6 +10,7 @@ build_requires:
   Scalar::Util: 0
   Test::Deep: 0
   Test::More: 0.94
+  perl: 5.004
 configure_requires:
   ExtUtils::MakeMaker: 6.31
 dynamic_config: 0
@@ -22,6 +23,9 @@ name: List-Flatten-Recursive
 requires:
   Exporter::Simple: 0
   List::MoreUtils: 0
-  perl: v5.10
+  perl: 5.008
   utf8: 0
-version: 0.103420
+resources:
+  homepage: http://github.com/DarwinAwardWinner/List-Flatten-Recursive/tree
+  repository: git://github.com/DarwinAwardWinner/List-Flatten-Recursive.git
+version: 0.103460
